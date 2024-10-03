@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Set the body background image and properties */
+        body {
+            background-image: url("images/bg_image_jfsd.jpg"); /* Replace with your image path */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            height: 100vh; /* Ensure the body takes full height of the viewport */
+            margin: 0; /* Remove default body margin */
+            color: white; /* Set default text color to white */
+        }
+
+        /* Admin Panel Flexbox Layout */
+        .admin-panel-flex {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-feature, .user-feature {
+            background-color: rgba(114, 182, 215, 0.9); /* Add slight transparency for better readability */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(235, 233, 233, 0.1);
+            flex: 1;
+            min-width: 250px;
+            color: black; /* Set text color for forms to black */
+        }
+
+        .admin-feature h3, .user-feature h3 {
+            margin-top: 0;
+        }
+
+        /* Responsive layout: Stack sections on top of each other on smaller screens */
+        @media (max-width: 768px) {
+            .admin-panel-flex {
+                flex-direction: column;
+            }
+        }
+
+        /* Dashboard container styling */
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        form button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Login form styling */
+        .login-form {
+            margin-bottom: 30px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- Login Section -->
+    <div class="login-form">
+        <h2>Role</h2>
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <label for="role">Select Role:</label>
+            <select id="role" name="role" required>
+                <option value="">Choose...</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- User Panel -->
+    <div class="card" id="user-section" style="display:none;">
+        <h2>User Panel</h2>
+        <p>As a User, you can access and search city details, report issues with public services, and provide feedback on amenities.</p>
+
+        <!-- Access and Search City Details -->
+        <div class="user-feature">
+            <h3>Access and Search City Details</h3>
+            <form id="search-city-form">
+                <label for="search">Search City Information:</label>
+                <input type="text" id="search" name="search" placeholder="Enter city details">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Report Issues with Public Services -->
+        <div class="user-feature">
+            <h3>Report Issues with Public Services</h3>
+            <form id="report-issues-form">
+                <label for="issueDescription">Issue Description:</label>
+                <textarea id="issueDescription" name="issueDescription" rows="4" cols="50" placeholder="Describe the issue"></textarea>
+                <button type="submit">Report Issue</button>
+            </form>
+        </div>
+
+        <!-- Provide Feedback on Amenities -->
+        <div class="user-feature">
+            <h3>Provide Feedback on Amenities</h3>
+            <form id="feedback-form">
+                <label for="amenity">Amenity:</label>
+                <input type="text" id="amenity" name="amenity" placeholder="e.g., Park, Library">
+                <label for="feedback">Feedback:</label>
+                <textarea id="feedback" name="feedback" rows="4" cols="50" placeholder="Give your feedback"></textarea>
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="card" id="admin-section" style="display:none;">
+        <h2>Admin Panel</h2>
+        <p>As an Admin, you can manage city information, update public services, and monitor infrastructure data.</p>
+
+        <!-- Flex container for the 3 sections -->
+        <div class="admin-panel-flex">
+            <!-- Manage City Information -->
+            <div class="admin-feature">
+                <h3>Manage City Information</h3>
+                <form id="manage-city-form">
+                    <label for="cityName">City Name:</label>
+                    <input type="text" id="cityName" name="cityName" required>
+                    <label for="population">Population:</label>
+                    <input type="number" id="population" name="population" required>
+                    <label for="area">Area (in sq.km):</label>
+                    <input type="number" id="area" name="area" required>
+                    <button type="submit">Update City Information</button>
+                </form>
+            </div>
+
+            <!-- Update Public Services -->
+            <div class="admin-feature">
+                <h3>Update Public Services</h3>
+                <form id="public-services-form">
+                    <label for="serviceName">Service Name:</label>
+                    <input type="text" id="serviceName" name="serviceName" placeholder="e.g., Healthcare, Transport" required>
+                    <label for="serviceStatus">Service Status:</label>
+                    <input type="text" id="serviceStatus" name="serviceStatus" placeholder="e.g., Available, Limited, Not Available" required>
+                    <button type="submit">Update Public Service</button>
+                </form>
+            </div>
+
+            <!-- Monitor Infrastructure Data -->
+            <div class="admin-feature">
+                <h3>Monitor Infrastructure Data</h3>
+                <table id="infrastructure-table">
+                    <thead>
+                        <tr>
+                            <th>Infrastructure Type</th>
+                            <th>Status</th>
+                            <th>Last Inspected</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Roads</td>
+                            <td>Good</td>
+                            <td>01-Oct-2024</td>
+                        </tr>
+                        <tr>
+                            <td>Bridges</td>
+                            <td>Needs Maintenance</td>
+                            <td>15-Sep-2024</td>
+                        </tr>
+                        <tr>
+                            <td>Water Supply</td>
+                            <td>Excellent</td>
+                            <td>25-Sep-2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button onclick="alert('Monitoring Infrastructure...')">Refresh Data</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Handle login and set role
+    function handleLogin(event) {
+        event.preventDefault();
+        const role = document.getElementById('role').value;
+        localStorage.setItem('role', role);
+        displayPanel(role);
+    }
+
+    // Display the appropriate panel based on the role
+    function displayPanel(role) {
+        if (role === 'user') {
+            document.getElementById('user-section').style.display = 'block';
+            document.getElementById('admin-section').style.display = 'none';
+        } else if (role === 'admin') {
+            document.getElementById('admin-section').style.display = 'block';
+            document.getElementById('user-section').style.display = 'none';
+        }
+    }
+
+    // On page load, check for role in localStorage
+    window.onload = function() {
+        const userRole = localStorage.getItem('role');
+        if (userRole) {
+            displayPanel(userRole);
+        }
+    };
+</script>
+
+</body>
+</html>
